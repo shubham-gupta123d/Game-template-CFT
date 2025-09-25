@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import { IoBagHandleOutline } from 'react-icons/io5';
+import { useSelector } from 'react-redux';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
+  // ✅ get number of items in cart
+  const cartCount = useSelector((state) => state.cart.items.length);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -70,8 +75,20 @@ const Header = () => {
                 <span className="font-medium">{user.name}</span>
                 <MdKeyboardArrowDown className="text-xl" />
               </div>
-              <IoBagHandleOutline className="text-2xl cursor-pointer" />{' '}
-              {/* ✅ updated bag */}
+
+              {/* ✅ Cart with Badge */}
+              <div
+                className="relative cursor-pointer"
+                onClick={() => navigate('/cart')}
+              >
+                <IoBagHandleOutline className="text-2xl" />
+                {cartCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-2">
+                    {cartCount}
+                  </span>
+                )}
+              </div>
+
               <button
                 onClick={handleLogout}
                 className="px-3 py-1 rounded-full border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition"
@@ -165,8 +182,23 @@ const Header = () => {
                     <MdKeyboardArrowDown className="text-xl" />
                   </div>
                 </div>
-                <IoBagHandleOutline className="text-2xl cursor-pointer" />{' '}
-                {/* ✅ updated bag */}
+
+                {/* ✅ Cart with Badge (mobile) */}
+                <div
+                  className="relative cursor-pointer"
+                  onClick={() => {
+                    navigate('/cart');
+                    setIsOpen(false);
+                  }}
+                >
+                  <IoBagHandleOutline className="text-2xl" />
+                  {cartCount > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-2">
+                      {cartCount}
+                    </span>
+                  )}
+                </div>
+
                 <button
                   onClick={() => {
                     handleLogout();
