@@ -16,6 +16,8 @@ import {
 
 import Home from '@/containers/Home';
 import Cart from '@/features/AddToCart/Cart';
+import Login from './containers/Forms/LogIn';
+import Signup from './containers/Forms/SignUp';
 
 function App() {
   return (
@@ -31,6 +33,8 @@ function App() {
               <Route path="lotteries" element={<div>Lottery Page</div>} />
               <Route path="faq" element={<Faq />} />
               <Route path="cart" element={<Cart />} />
+              <Route path="login" element={<Login />} />
+              <Route path="signup" element={<Signup />} />
             </Route>
             <Route path="/*" element={<NotFound />} />
           </Routes>

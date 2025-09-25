@@ -94,6 +94,8 @@ function Lotto() {
   };
 
   const handleAddToCart = () => {
+    toast.dismiss();
+
     if (mainSelected.length !== 5 || !megaSelected) {
       toast.error('Please select 5 main balls and 1 mega ball! ⚠️');
       return;
@@ -105,18 +107,20 @@ function Lotto() {
     }
 
     const entry = {
-      id: Date.now(), // unique id (used when a new item is created)
+      id: Date.now(), // unique id
       drawId: selectedBanner.id,
       drawName: selectedBanner.title,
       dateTime: new Date().toLocaleString(),
       mainNumbers: mainSelected.slice().sort((a, b) => a - b),
       megaNumber: megaSelected,
-      price: parsePrice(selectedBanner.price), // price comes from banner
+      price: parsePrice(selectedBanner.price),
     };
 
-    // dispatch - cartSlice will merge exact duplicates (same banner + numbers)
+    // Add to Redux store
     dispatch(addToCart(entry));
+
     clearAll();
+
     toast.success(`${selectedBanner.title} — Ticket added to cart 🎉`);
   };
 
@@ -130,7 +134,6 @@ function Lotto() {
       {/* Header Card */}
       <LottoHeader hours={hours} minutes={minutes} seconds={seconds} />
 
-      {/* Numbers Section */}
       <div className="mt-6 rounded-2xl w-full max-w-5xl bg-white border border-black shadow-lg">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[2fr_1fr] gap-6 p-6">
           {/* Main Ball */}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { IoIosArrowDropleft, IoIosArrowDropright } from 'react-icons/io';
 import { useDispatch } from 'react-redux';
@@ -7,39 +7,41 @@ import { setBanner } from '@/features/AddToCart/bannerSlice';
 function LottoHeader({ hours, minutes, seconds }) {
   const dispatch = useDispatch();
 
-  const banners = [
-    {
-      id: 1,
-      title: 'Mega Jackpot',
-      prize: '₹5,00,00,000',
-      price: '₹100',
-      date: '📅 Tuesday, July 9, 2024',
-      img: 'container.png',
-    },
-    {
-      id: 2,
-      title: 'Mini Jackpot',
-      prize: '₹50,00,000',
-      price: '₹50',
-      date: '📅 Friday, July 12, 2024',
-      img: 'container.png',
-    },
-    {
-      id: 3,
-      title: 'Royal Lotto',
-      prize: '₹1,00,00,000',
-      price: '₹75',
-      date: '📅 Sunday, July 14, 2024',
-      img: 'container.png',
-    },
-  ];
+  const banners = useMemo(
+    () => [
+      {
+        id: 1,
+        title: 'Mega Jackpot',
+        prize: '₹5,00,00,000',
+        price: '₹100',
+        date: '📅 Tuesday, July 9, 2024',
+        img: 'container.png',
+      },
+      {
+        id: 2,
+        title: 'Mini Jackpot',
+        prize: '₹50,00,000',
+        price: '₹50',
+        date: '📅 Friday, July 12, 2024',
+        img: 'container.png',
+      },
+      {
+        id: 3,
+        title: 'Royal Lotto',
+        prize: '₹1,00,00,000',
+        price: '₹75',
+        date: '📅 Sunday, July 14, 2024',
+        img: 'container.png',
+      },
+    ],
+    [],
+  );
 
   const [index, setIndex] = useState(0);
 
-  // Update redux banner whenever index changes (and on mount)
   useEffect(() => {
     dispatch(setBanner(banners[index]));
-  }, [index, dispatch]);
+  }, [index, dispatch, banners]);
 
   const prevBanner = () => {
     setIndex((prev) => (prev === 0 ? banners.length - 1 : prev - 1));
@@ -51,7 +53,7 @@ function LottoHeader({ hours, minutes, seconds }) {
 
   return (
     <div className="relative w-full max-w-5xl mx-auto flex items-center">
-      {/* LEFT ARROW - outside */}
+      {/* LEFT ARROW */}
       <button
         onClick={prevBanner}
         className="absolute left-[2%] top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center hover:bg-gray-100 shadow rounded-full z-10"
@@ -63,7 +65,6 @@ function LottoHeader({ hours, minutes, seconds }) {
       <div className="container flex flex-col lg:flex-row items-stretch justify-between gap-4 bg-gradient-to-r from-yellow-500 to-yellow-70 rounded-2xl">
         {/* SLIDER */}
         <div className="relative w-full lg:w-[60%] overflow-hidden bg-gradient-to-r from-yellow-400 to-yellow-600 rounded-2xl border border-white shadow gap-2 py-4">
-          {/* SLIDE TRACK */}
           <div
             className="flex transition-transform duration-500 ease-in-out"
             style={{ transform: `translateX(-${index * 100}%)` }}
@@ -73,7 +74,7 @@ function LottoHeader({ hours, minutes, seconds }) {
                 key={banner.id}
                 className="flex items-center justify-between w-full flex-shrink-0 px-4"
               >
-                {/* LEFT SIDE: Info */}
+                {/* LEFT SIDE: INFO */}
                 <div className="flex w-full items-center gap-3">
                   <img
                     src={banner.img}
@@ -154,7 +155,7 @@ function LottoHeader({ hours, minutes, seconds }) {
         </div>
       </div>
 
-      {/* RIGHT ARROW - outside */}
+      {/* RIGHT ARROW */}
       <button
         onClick={nextBanner}
         className="absolute left-[59%] top-1/2 -translate-y-1/2 w-10 h-10 flex items-center hover:bg-gray-100 shadow rounded-full z-10"
